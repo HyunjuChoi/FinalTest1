@@ -1,129 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import AddressTest from "./NewAddress";
-import PopupDom from './PopupDom';
+//import { Link } from "react-router-dom";
+//import NewAddress from "./NewAddress";
+//import PopupDom from './NewAddress';
 import Modal from 'react-modal';
 
-import DaumPostCode from 'react-daum-postcode';
+import DaumPostcode from 'react-daum-postcode';
 
+import './Address.css';
 
-// 배송지 수정 모달
-const PopupModal = ({ isOpen, closeModal }) => {
-
-  const customStyles = {
-    content: {
-      width: '30%', // Set the desired width
-      height: '50%', // Set the desired height
-      margin: 'auto', // Center the modal horizontally
-      borderRadius: '8px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-      //textAlign: 'center',
-      //padding: 'auto',
-      fontFamily: 'NanumGothic',
-      fontSize: '11pt',
-    },
-  };
-
-  // 배송지 수정 -> 삭제
-  const handleDelete = () => {
-    const confirmDelete = window.confirm('삭제하시겠습니까?');
-    if (confirmDelete) {
-      //deleteData(); // Perform delete operation
-      window.confirm('삭제되었습니다');
-      closeModal(); // Close the modal
-    }
-  }
-
-
-  return (
-
-    
-    <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
-      {/* Content of your modal */}
-        <div style={ {paddingTop: '8px',
-                 //paddingBottom: '-5px',
-      }}>
-        <h2>&ensp;배송지 수정</h2>
-        
-        <p>&ensp;배송지를 수정하세요</p>
-        <div style={ { margin: '5px', } }>
-          <input style={{
-            width: '100%',
-            height: '38px',
-            borderRadius: '3px',
-            border: '1px solid lightgrey',
-            
-          }}></input>
-        </div>
-
-        <p>&ensp; 받으실 분</p>
-        <div style={ { margin: '5px', } }>
-          <input style={{
-            width: '100%',
-            height: '38px',
-            borderRadius: '3px',
-            border: '1px solid lightgrey',
-          }}></input>
-        </div>
-
-        <p>&ensp; 휴대폰</p>
-        <div style={ { margin: '5px', } }>
-          <input style={{
-            width: '100%',
-            height: '38px',
-            borderRadius: '3px',
-            border: '1px solid lightgrey',
-          }}></input>
-        </div>
-
-       &ensp;
-       <div className="UpdateBtn" style={ {
-          paddingTop: '10px',
-        
-       }}>
-        <button onClick={closeModal}
-                style ={{
-                  width:'100%',
-                  height: '45px',
-                  background: '#5f0080',
-                  borderRadius: '3px',
-                  cursor: 'pointer',
-                  fontSize: '11pt',
-                  fontWeight: 'bold',
-                  color: 'white',
-                  border: '0px',
-                  
-              }}
-        >저장</button>
-        </div>
-
-        <div className="DeleteBtn"  style={ {
-          paddingTop: '10px',
-       }}>
-        <button onClick={handleDelete}
-                style ={{
-                  width:'100%',
-                  height: '45px',
-                  background: '#ffffff',
-                  borderRadius: '3px',
-                  cursor: 'pointer',
-                  fontSize: '11pt',
-                  fontWeight: 'bold',
-                  color: 'black',
-                  border: '1px solid lightgrey',
-                  
-                  
-              }}
-        >삭제</button>
-                  
-        </div>
-      </div>
-    </Modal>
-  );
-};
 
 // 배송지 선택 확인 모달
-
 const PopupModal2 = ({ isOpen2, closeModal2 }) => {
 
   const customStyles2 = {
@@ -143,7 +29,6 @@ const PopupModal2 = ({ isOpen2, closeModal2 }) => {
 
   return (
 
-    
     <Modal isOpen={isOpen2} onRequestClose={closeModal2} style={customStyles2}>
       {/* Content of your modal */}
         <div style={ {paddingTop: '6px',
@@ -178,32 +63,63 @@ const PopupModal2 = ({ isOpen2, closeModal2 }) => {
 };
 
 
+// 삭제 확인 모달
+const PopupModal3 = ({ isOpen3, closeModal3 }) => {
+
+  const customStyles3 = {
+    content: {
+      width: '22%', // Set the desired width
+      height: '18%', // Set the desired height
+      margin: 'auto', // Center the modal horizontally
+      borderRadius: '8px',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+      //textAlign: 'center',
+      //padding: 'auto',
+      fontFamily: 'NanumGothic',
+      fontSize: '11pt',
+    },
+  };
+
+
+  return (
+
+    <Modal isOpen={isOpen3} onRequestClose={closeModal3} style={customStyles3}>
+      {/* Content of your modal */}
+        <div style={ {paddingTop: '6px',
+                 
+      }}>
+        <h2 style={{ textAlign:'center', fontSize:'16pt'}}>삭제하시겠습니까?</h2>
+        <div className="CloseBtn" style={ {
+            paddingTop: '25px',
+            display: 'flex',
+            justifyContent: 'center',
+
+        }}>
+          &ensp;
+        <button onClick={closeModal3}
+                style ={{
+                  width:'50%',
+                  height: '45px',
+                  background: '#5f0080',
+                  borderRadius: '3px',
+                  cursor: 'pointer',
+                  fontSize: '11pt',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  border: '0px',
+                  
+              }}
+        >삭제</button>
+        </div>      
+      </div>
+    </Modal>
+  );
+};
+
+
 
 export default function Component() {
 
-  // 배송지 추가 팝업
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
-
-  const [address, setAddress] = useState({
-    postNumber: "", // 우편 번호
-    streetNameAddress: "", // 도로명 주소
-    jibunAddress: "", // 지번 주소
-    detailedAddress: "", // 상세 주소
-    note: "", // 참고사항
-  });
-
-  // 팝업창 열고 닫기
-  const openPostCode = () => {
-    setIsPopupOpen(!isPopupOpen);
-  }
-
-  // const closePostCode = () => {
-  //   setIsPopupOpen(false)
-  // }
-
-
-  // check box
-  const [isChecked, setIsChecked] = useState(false);
 
   const [checkboxes, setCheckboxes] = useState(['checkbox1']);
 
@@ -223,22 +139,12 @@ export default function Component() {
   }
   
 
-  // 배송지 수정 모달 function
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 배송지 선택 확인 모달
   const [isModalOpen2, setIsModalOpen2] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
   const openModal2 = () => {
     setIsModalOpen2(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
   };
 
   const closeModal2 = () => {
@@ -246,158 +152,246 @@ export default function Component() {
   };
 
 
+  //배송지 삭제 확인 모달
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+
+  const openModal3 = () => {
+    setIsModalOpen3(true);
+  };
+
+  const closeModal3 = () => {
+    setIsModalOpen3(false);
+  };
+
+  
+  // 새 배송지 추가 모달
+  const [isOpen, setIsOpen] = useState(false);
+  const [address, setAddress] = useState({
+    streetNameAddress: '',
+    detailedAddress: '',
+  });
+  const [showPostcode, setShowPostcode] = useState(false);
+
+  const openModal = () => {
+    // 주소 입력 필드 reset
+    setAddress({
+      streetNameAddress: '',
+      detailedAddress: '',
+    });
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const handlePostCode = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    const streetNameAddress = data.address;
+
+    setAddress({
+      ...address,
+      streetNameAddress: streetNameAddress,
+      detailedAddress: '',
+    });
+
+    setShowPostcode(false);
+  };
+
+  const handleDelete = () => {
+    const confirmDelete = window.confirm('삭제하시겠습니까?');
+    if (confirmDelete) {
+      //deleteData(); // Perform delete operation
+      window.confirm('삭제되었습니다');
+      closeModal(); // Close the modal
+    }
+  };
+
+  const customStyles = {
+    content: {
+        width: '35%', // Set the desired width
+        height: '55%', // Set the desired height
+        margin: 'auto', // Center the modal horizontally
+        borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        //textAlign: 'center',
+        //padding: 'auto',
+        fontFamily: 'NanumGothic',
+        fontSize: '11pt',
+        outline: 'none',
+        overflow: 'auto', // Hide the scrollbar
+      },
+  };
+
+  const postCodeStyle = {
+    display: 'flex',
+    alignItems:'center',
+    position: 'absolute',
+    //top: '10%',
+    marginLeft:'-20px',
+    //paddingLeft:'-10%',
+    paddingTop:'15px',
+    width: '100%',
+    height: '100%',
+    overflow:'hidden',
+    overflowY:'hidden',
+    
+  };
+
+  // 스크롤바 숨기면서 스크롤 되게 하기
+  const hideScrollbarStyles = `
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+  
+  /* Firefox */
+  scrollbar-width: none;
+`;
+
+
   return (
     <>
-      <div
-        className="MyPage"
-        style={{
-          boxSizing: "border-box",
-          padding: "50px 0px 80px",
-          margin: "0px auto",
-          display: "flex",
-          width: "1050px",
-          flexDirection: "row",
-          WebkitBoxPack: "justify",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="MyPage">
 
-    {/* 배송지 수정 모달페이지 */}
+    {/* 배송지 수정 & 선택 모달페이지 */}
 
-    
+    <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
+    <style>{hideScrollbarStyles}</style>
+        <div style={{ paddingTop: '5px' }}>
+          <h2>&ensp;새 배송지 등록</h2>
+          <br />
+          <span>&ensp;배송지 입력&ensp;</span>
+
+          <button
+            className="FindAddressBtn"
+            onClick={() => setShowPostcode(!showPostcode)}
+          >
+            주소찾기
+          </button>
+
+          <div style={{ margin: '5px' }}>
+            <input
+              value={address.streetNameAddress}
+              readOnly/>
+
+            <input
+              value={address.detailedAddress}
+              placeholder="  상세 주소를 입력해 주세요"
+              />
+          </div>
+
+          <p>&ensp; 받으실 분</p>
+          <div style={{ margin: '5px' }}>
+            <input/>
+          </div>
+
+          <p>&ensp; 휴대폰</p>
+          <div style={{ margin: '5px' }}>
+            <input/>
+          </div>
+
+          <div className="Btn" style={{ paddingTop: '10px' }}>
+            <button
+              id="updateBtn"
+              onClick={closeModal}>
+              저장
+            </button>
+          </div>
+
+          <div className="Btn" style={{ paddingTop: '10px' }}>
+            <button
+              id="deleteBtn"
+              onClick={handleDelete} >
+              삭제
+            </button>
+          </div>
+        </div>
+      </Modal>
+
     <div> 
-      {isModalOpen && (
-        <PopupModal isOpen={isModalOpen} closeModal={closeModal} />
-      )}
       {isModalOpen2 && (
         <PopupModal2 isOpen2={isModalOpen2} closeModal2={closeModal2} />
       )}
     </div>
 
+    <div> 
+      {isModalOpen3 && (
+        <PopupModal3 isOpen3={isModalOpen3} closeModal3={closeModal3} />
+      )}
+    </div>
+
+    {showPostcode && (
+        <Modal isOpen={true} onRequestClose={() => setShowPostcode(false)} style={customStyles}>
+          <div >
+            <button
+              id="xBtn"
+              onClick={() => setShowPostcode(false)}
+            >
+             X
+            </button>
+          
+            <DaumPostcode style={postCodeStyle} onComplete={handlePostCode} autoClose={true} />
+         </div>
+        </Modal>
+      )}
+
 
 
         {/* 좌측 네비게이션 바 */}
 
-        <div
-          className="NavHeader"
-          style={{
-            width: "200px",
-          }}
-        >
-          <div
-            className="NavTitle"
-            style={{
-              margin: "0px",
-              boxSizing: "border-box",
-              padding: "5px 0px 35px 1px",
-              height: "75px",
-              fontWeight: 500,
-              fontSize: "28px",
-              lineHeight: "35px",
-              color: "rgb(51, 51, 51)",
-              letterSpacing: "-1px",
-            }}
-          >
+        <div className="NavHeader">
+          <div className="NavTitle">
             마이컬리
           </div>
-          <ul
-            className="NavMain"
-            style={{
-              padding: "0px",
-              margin: "0px",
-              boxSizing: "border-box",
-              listStyleType: "none",
-              border: "1px solid rgb(242, 242, 242)",
-            }}
-          >
-            <li className="NavDetail" style={{ }}>
-              <a href="/order"
-                className="Order"
-                style={{
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  textDecoration: "none",
-                  backgroundColor: "transparent",
-                  borderBottom: "1px solid rgb(242, 242, 242)",
-                  padding: "15px 13px 15px 20px",
-                  cursor: "pointer",
-                  display: "flex",
-                  WebkitBoxPack: "justify",
-                  justifyContent: "space-between",
-                  WebkitBoxAlign: "center",
-                  alignItems: "center",
-                  lineHeight: "19px",
-                  letterSpacing: "-0.3px",
-                  fontSize: "14px",
-                  //color: "rgb(102, 102, 102)",
-                }}
-              >
+          <ul className="NavMain">
+            <li className="NavDetail">
+              <a href="/order" className="Order" >
                 주문내역
                 
                 {/* svg, g태그 : 이미지 사용할때! => 화살표 태그 이미지 삽입 */}
                 <svg
+                  id="Arrow"
                   height="19"
                   width="19"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
-                    overflow: "hidden",
-                  }}
                 >
-                  <defs
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
-                  >
+                  <defs>
                     <path
                       id="gfk9q0rhta"
                       d="M1.657 1.657L9.657 1.657 9.657 9.657"      /* 화살표 이미지 경로 */
-                      style={{
-                        padding: "0px",
-                        margin: "0px",
-                        boxSizing: "border-box",
-                      }}
                     />
                   </defs>
                   <g
                     fill="none"
                     fillRule="evenodd"
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
                   >
                     
-                          <g
-                            transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                            }}
-                          >
-                            <use
-                              id="arrowIcon"
-                              stroke="#999"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="1.8"
-                              transform="rotate(45 5.657 5.657)"
-                              xlinkHref="#gfk9q0rhta"
-                              style={{
-                                padding: "0px",
-                                margin: "0px",
-                                boxSizing: "border-box",
-                              }}
-                            />
-                          </g>
-                       
+                    <g
+                      transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
+                    >
+                      <use
+                        id="arrowIcon"
+                        stroke="#999"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                        transform="rotate(45 5.657 5.657)"
+                        xlinkHref="#gfk9q0rhta"
+                      />
+                    </g>   
                   </g>
                 </svg>
               </a>
@@ -405,271 +399,119 @@ export default function Component() {
             
             
             <li className="NavDetail" style={{ }} >
-              <a
-                className="Address"
-                style={{
-                  textDecoration: "none",
-                      borderBottom: "1px solid rgb(242, 242, 242)",
-                      padding: "15px 13px 15px 20px",
-                      cursor: "pointer",
-                      display: "flex",
-                      WebkitBoxPack: "justify",
-                      justifyContent: "space-between",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      lineHeight: "19px",
-                      letterSpacing: "-0.3px",
-                      fontSize: "14px",
-                      backgroundColor: "rgb(250, 250, 250)",
-                      color: "rgb(95, 0, 128)",
-                      fontWeight: 500,
-                }}
-              >
+              <a className="Address">
                 배송지 관리
                 <svg
+                  id="Arrow"
                   height="19"
                   width="19"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
-                    overflow: "hidden",
-                  }}
-                >
-                  <defs
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
                   >
+                  <defs>
                     <path
                       id="gfk9q0rhta"
                       d="M1.657 1.657L9.657 1.657 9.657 9.657"
-                      style={{
-                        padding: "0px",
-                        margin: "0px",
-                        boxSizing: "border-box",
-                      }}
                     />
                   </defs>
-                  <g
-                    fill="none"
-                    fillRule="evenodd"
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
-                  >
+                    <g
+                      fill="none"
+                      fillRule="evenodd" 
+                    >
                     
-                          <g
-                            transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                            }}
-                          >
-                            <use
-                              id="arrowIcon"
-                              stroke="#5f0080"      // 화살표 색상
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="1.8"
-                              transform="rotate(45 5.657 5.657)"
-                              xlinkHref="#gfk9q0rhta"
-                              style={{
-                                padding: "0px",
-                                margin: "0px",
-                                boxSizing: "border-box",
-                              }}
-                            />
-                          </g>
+                      <g
+                        transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
+                      >
+                        <use
+                          id="arrowIcon"
+                          stroke="#5f0080"      // 화살표 색상
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.8"
+                          transform="rotate(45 5.657 5.657)"
+                          xlinkHref="#gfk9q0rhta"
+                        />
+                      </g>
                       
                   </g>
                 </svg>
               </a>
             </li>
+            
             <li className="NavDetail" style={{ }}>
-              <a
-                className="Review"
-                style={{
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  textDecoration: "none",
-                  backgroundColor: "transparent",
-                  borderBottom: "1px solid rgb(242, 242, 242)",
-                  padding: "15px 13px 15px 20px",
-                  cursor: "pointer",
-                  display: "flex",
-                  WebkitBoxPack: "justify",
-                  justifyContent: "space-between",
-                  WebkitBoxAlign: "center",
-                  alignItems: "center",
-                  lineHeight: "19px",
-                  letterSpacing: "-0.3px",
-                  fontSize: "14px",
-                  //color: "rgb(102, 102, 102)",
-                }}
-              >
+              <a className="Review">
                 상품후기
                 <svg
+                  id="Arrow"
                   height="19"
                   width="19"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
-                    overflow: "hidden",
-                  }}
                 >
-                  <defs
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
-                  >
+                  <defs>
                     <path
                       id="gfk9q0rhta"
                       d="M1.657 1.657L9.657 1.657 9.657 9.657"
-                      style={{
-                        padding: "0px",
-                        margin: "0px",
-                        boxSizing: "border-box",
-                      }}
                     />
                   </defs>
                   <g
                     fill="none"
                     fillRule="evenodd"
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
                   >
                     
-                          <g
-                            transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                            }}
-                          >
-                            <use
-                              id="arrowIcon"
-                              stroke="#999"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="1.8"
-                              transform="rotate(45 5.657 5.657)"
-                              xlinkHref="#gfk9q0rhta"
-                              style={{
-                                padding: "0px",
-                                margin: "0px",
-                                boxSizing: "border-box",
-                              }}
-                            />
-                          </g>
-                        
+                    <g
+                      transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
+                    >
+                      <use
+                        id="arrowIcon"
+                        stroke="#999"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                        transform="rotate(45 5.657 5.657)"
+                        xlinkHref="#gfk9q0rhta"
+                      />
+                    </g>
+                  
                   </g>
                 </svg>
               </a>
             </li>
 
-            <li  className="NavDetail" style={{ }}>
-              <a
-                className="Info"
-                style={{
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  textDecoration: "none",
-                  backgroundColor: "transparent",
-                  borderBottom: "1px solid rgb(242, 242, 242)",
-                  padding: "15px 13px 15px 20px",
-                  cursor: "pointer",
-                  display: "flex",
-                  WebkitBoxPack: "justify",
-                  justifyContent: "space-between",
-                  WebkitBoxAlign: "center",
-                  alignItems: "center",
-                  lineHeight: "19px",
-                  letterSpacing: "-0.3px",
-                  fontSize: "14px",
-                  //color: "rgb(102, 102, 102)",
-                }}
-              >
+            <li className="NavDetail">
+              <a className="Info">
                 개인 정보 수정
                 <svg
+                  id="Arrow"
                   height="19"
                   width="19"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
-                    overflow: "hidden",
-                  }}
                 >
-                  <defs
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
-                  >
+                  <defs >
                     <path
                       id="gfk9q0rhta"
                       d="M1.657 1.657L9.657 1.657 9.657 9.657"
-                      style={{
-                        padding: "0px",
-                        margin: "0px",
-                        boxSizing: "border-box",
-                      }}
                     />
                   </defs>
                   <g
                     fill="none"
                     fillRule="evenodd"
-                    style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                    }}
                   >
                     
-                          <g
-                            transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                            }}
-                          >
-                            <use
-                              id="arrowIcon"
-                              stroke="#999"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="1.8"
-                              transform="rotate(45 5.657 5.657)"
-                              xlinkHref="#gfk9q0rhta"
-                              style={{
-                                padding: "0px",
-                                margin: "0px",
-                                boxSizing: "border-box",
-                              }}
-                            />
-                          </g>
-                        
+                    <g
+                      transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)"
+                    >
+                      <use
+                        id="arrowIcon"
+                        stroke="#999"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                        transform="rotate(45 5.657 5.657)"
+                        xlinkHref="#gfk9q0rhta"
+                      />
+                    </g>     
                   </g>
                 </svg>
               </a>
@@ -678,66 +520,17 @@ export default function Component() {
         </div>
 
 
-        <div
-          className="AddressMain"
-          style={{
-            padding: "0px",
-            margin: "0px",
-            boxSizing: "border-box",
-            width: "820px",
-            //border: "2px solid blue",
-          }}
-        >
-          <div
-            className="AddressMain-1"
-            style={{
-              padding: "0px",
-              margin: "0px",
-              boxSizing: "border-box",
-              width: "820px",
-              //border: "2px solid gold",
-            }}
-          >
+        <div className="AddressMain">
+          <div className="AddressMain-1" >
             <div
-              className="AddressMainTitle"
-              style={{
-                padding: "0px",
-                margin: "0px",
-                boxSizing: "border-box",
-                borderBottom: "2px solid rgb(51, 51, 51)",
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                paddingBottom: "20px",
-                WebkitBoxPack: "justify",
-                justifyContent: "space-between",
-                //border: "2px solid red",
-              }}
-            >
+              className="AddressMainTitle">
               <div
-                className="css-tq074a e1af7ryb6"
-                style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  display: "flex",
-                  flexDirection: "row",
-                  WebkitBoxAlign: "center",
-                  alignItems: "center",
-                  WebkitBoxPack: "justify",
-                  justifyContent: "space-between",
-                  //border: "2px solid yellowgreen",
-                }}
-              >
+                className="AddressMainTitle-1">
                 <div
                   className="css-fhxb3m e1af7ryb4"
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
+                  style={{ 
                     display: "flex",
                     flexDirection: "row",
-                    WebkitBoxAlign: "center",
                     alignItems: "center",
                     //border: "2px solid skyblue",
                   }}
@@ -745,9 +538,6 @@ export default function Component() {
                   <span
                     className="css-1268zpe e1af7ryb5"
                     style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
                       fontWeight: 500,
                       fontSize: "24px",
                       color: "rgb(51, 51, 51)",
@@ -761,10 +551,7 @@ export default function Component() {
                   <span
                     className="css-a3vgo2 e1af7ryb3"
                     style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                      paddingLeft: "11px",
+                      paddingLeft: "13px",
                       fontSize: "14px",
                       letterSpacing: "-0.3px",
                       color: "rgb(153, 153, 153)",
@@ -774,163 +561,47 @@ export default function Component() {
                     배송지에 따라 상품정보 및 배송유형이 달라질 수 있습니다.
                   </span>
                 </div>
-                <div
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
-                  }}
-                >
+                <div>
                   <div
-                    className="css-1es6ihh e1af7ryb2"
+                    className="NewAddressAdd"
                     style={{
-                      padding: "0px",
-                      margin: "0px",
-                      boxSizing: "border-box",
-                      flex: "1 1 0%",
-                      textAlign: "right",
-                      //border: "2px solid blue",
+                      
+                      
                     }}
                   >
-                    <div
-                      className="css-1xhquvz e1a9f8h00"
-                      style={{
-                        padding: "0px",
-                        margin: "0px",
-                        boxSizing: "border-box",
-                      }}
-                    >
-
+                    <div>
                       {/* 새 배송지 추가 버튼 클릭 시 주소 api 새 창 띄움 */}
                       {/* <Link to='/address-shipping' > */}
                       <button
-                        //onClick={ openPostCode }
-                        onClick={ () => { 
-
-                          // 주소api 팝업창 크기 및 브라우저 위치 지정
-                          const width = 620;
-                          const height = 630;
-                          const left = (window.innerWidth - width) / 2;
-                          const top = (window.innerHeight - height) / 2;
-
-                          window.open(
-                            './address-shipping',
-                            '_blank',
-                            `width=${width}, height=${height}, left=${left}, top=${top}, scrollbars=no`
-                            )}}
+                        onClick={ openModal }
+                        
                         className="NewAdressBtn"
                         type="button"
                         height="60"
-                        style={{
-                          boxSizing: "border-box",
-                          font: "inherit",
-                          margin: "0px",
-                          WebkitTapHighlightColor: "transparent",
-                          textTransform: "none",
-                          appearance: "button",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          fontFamily:
-                            '"Noto Sans", "malgun gothic", AppleGothic, dotum, sans-serif',
-                          padding: "0px 10px",
-                          overflow: "hidden",
-                          borderRadius: "3px",
-                          display: "block",
-                          textAlign: "center",
-                          width: "100%",
-                          height: "60px",
-                          color: "rgb(51, 51, 51)",
-                          backgroundColor: "rgb(255, 255, 255)",
-                          //border: "5px solid grey",
-                          border:"0px"
-                        }}
                       >
                         <span
-                          className="NewAddressText"
-                          style={{
-                            padding: "0px",
-                            margin: "0px",
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            fontSize: "16px",
-                            fontWeight: 500,
-                            lineHeight: "24px",
-                            //border: "2px solid gold"
-                          }}
-                        >
+                          className="NewAddressText" >
                           <img      // + 버튼 이미지
-                            className="css-1m3kac1 e4nu7ef0"
+                            className="PlusBtn"
                             src="https://res.kurly.com/pc/ico/2006/ico_add_16x16.svg"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                              maxWidth: "100%",
-                              border: "0px",
-                              display: "inline-block",
-                              marginRight: "4px",
-                              width: "16px",
-                              height: "16px",
-                              marginTop: "5px",
-                              verticalAlign: "top",
-                            }}
                           />
                           새 배송지 추가
                         </span>
                       </button>
-                      {/* {open ? <AddressTest handler={daumHandler}/> : null } <br/> */}
-                      {/* </Link> */}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div id='popupDom'>
-                {isPopupOpen && (
-                  <PopupDom>
-                    {/* <AddressTest onClose={closePostCode} /> */}
-                    <AddressTest />
-                  </PopupDom>
-                )}
-            </div>
+            
+
+            <div className="DivideLine"/>
 
             <div
-                className="DivideLine"
-                style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  borderBottom: "2px solid rgb(51, 51, 51)",
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  WebkitBoxAlign: "center",
-                  alignItems: "center",
-                  border: "1px black"
-                }}
-              />
-
-            <div
-              className="css-1jdq78j e1cucsfi1"
-              style={{
-                margin: "0px",
-                boxSizing: "border-box",
-                padding: "20px 0px",
-                borderBottom: "1px solid rgb(51, 51, 51)",
-                display: "flex",
-                width: "100%",
-              }}
-            >
+              className="IndexBar" >
               <div
                 className="css-wru9pk e1cucsfi0"
                 style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  textAlign: "center",
-                  lineHeight: "20px",
-                  fontWeight: 500,
-                  color: "rgb(51, 51, 51)",
                   flexBasis: "60px",
                 }}
               >
@@ -939,14 +610,7 @@ export default function Component() {
               <div
                 className="css-3fr0n1 e1cucsfi0"
                 style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
                   flex: "1 1 0%",
-                  textAlign: "center",
-                  lineHeight: "20px",
-                  fontWeight: 500,
-                  color: "rgb(51, 51, 51)",
                 }}
               >
                 주소
@@ -954,13 +618,6 @@ export default function Component() {
               <div
                 className="css-gtglzf e1cucsfi0"
                 style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  textAlign: "center",
-                  lineHeight: "20px",
-                  fontWeight: 500,
-                  color: "rgb(51, 51, 51)",
                   flexBasis: "120px",
                 }}
               >
@@ -969,13 +626,6 @@ export default function Component() {
               <div
                 className="css-1aqlhfo e1cucsfi0"
                 style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  textAlign: "center",
-                  lineHeight: "20px",
-                  fontWeight: 500,
-                  color: "rgb(51, 51, 51)",
                   flexBasis: "100px",
                 }}
               >
@@ -985,68 +635,21 @@ export default function Component() {
               <div
                 className="css-wru9pk e1cucsfi0"
                 style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
                   textAlign: "center",
                   lineHeight: "20px",
                   fontWeight: 500,
-                  color: "rgb(51, 51, 51)",
                   flexBasis: "60px",
                 }}
               >
-                수정
+                삭제
               </div>
             </div>
             <ul
-              className="css-1fttcpj erme1rh2"
-              style={{
-                padding: "0px",
-                margin: "0px",
-                boxSizing: "border-box",
-                listStyleType: "none",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <li
-                className="css-d35zkp erme1rh1"
-                style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  borderBottom: "1px solid rgb(244, 244, 244)",
-                }}
-              >
-                <div
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
-                    flex: "1 1 0%",
-                    display: "flex",
-                    //border:"2px solid green"
-                  }}
-                >
+              className="AddressList">
+              <li className="AddressList-1">
+                <div id="AddressList-1">
 
-                    <div
-                      style={{
-                        //border:"2px solid pink",
-                        boxSizing: "border-box",
-                        padding: "0px",
-                        margin: "20px 0px",
-                        display: "flex",
-                        WebkitBoxAlign: "center",
-                        alignItems: "center",
-                        WebkitBoxPack: "center",
-                        justifyContent: "center",
-                        textAlign: "center",
-                        minHeight: "49px",
-                        color: "rgb(51, 51, 51)",
-                        letterSpacing: "-0.3px",
-                        flexBasis: "60px",
-                      }}
-                  >
+                    <div id="checkBtn">
 
                     <label htmlFor="checkbox">
                       <div>
@@ -1072,26 +675,7 @@ export default function Component() {
                     </label>
                   </div>
 
-                  <div
-                    className="eeocvzp4 css-8xfsdg e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      flex: "1 1 0%",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      WebkitBoxPack: "start",
-                      justifyContent: "start",
-                      fontSize: "16px",
-                      textAlign: "left",
-                      //border:"2px solid green"
-                    }}
-                  >
+                  <div className="addressDetail">
                     <div
                       style={{
                         padding: "0px",
@@ -1103,127 +687,38 @@ export default function Component() {
                       경기 성남시 분당구 미금로 215 (청솔마을) 807-1704
                     </div>
                   </div>
-                  <div
-                    className="eeocvzp3 css-1o9d8vk e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      WebkitBoxPack: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      flexBasis: "120px",
-                    }}
-                  >
+                  <div className="addressName">
                     최현주
                   </div>
-                  <div
-                    className="eeocvzp2 css-xkreku e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      WebkitBoxPack: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      flexBasis: "100px",
-                    }}
-                  >
+                  <div className="addressPhone">
                     010-6563-0571
                   </div>
                   
-                  {/* 주소 수정 이미지 (연필) */}
-                  <div
-                    className="eeocvzp1 css-1bs5q0a e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      WebkitBoxPack: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      flexBasis: "60px",
-                    }}
-                  >
+                  {/* 주소 삭제 이미지 */}
+                  <div className="addressDel">
                     {/* <Link to='/update'> */}
-                    <button onClick={openModal}
-                      style={{
-                        padding: "0px",
-                        boxSizing: "border-box",
-                        font: "inherit",
-                        margin: "0px",
-                        WebkitTapHighlightColor: "transparent",
-                        overflow: "visible",
-                        border: "none",
-                        backgroundColor: "transparent",
-                        textTransform: "none",
-                        appearance: "button",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        color: "rgb(51, 51, 51)",
-                        borderRadius: "0px",
-                        fontFamily:
-                          '"Noto Sans", "malgun gothic", AppleGothic, dotum, sans-serif',
-                      }}
-                    >
+                    <button 
+                      id="XBtn"
+                      onClick={openModal3}>
                       <svg
                         height="24"
                         width="24"
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
                         style={{
-                          padding: "0px",
-                          margin: "0px",
-                          boxSizing: "border-box",
                           overflow: "hidden",
                         }}
                       >
                         <g
                           fill="none"
-                          fillRule="evenodd"
-                          style={{
-                            padding: "0px",
-                            margin: "0px",
-                            boxSizing: "border-box",
-                          }}
-                        >
+                          fillRule="evenodd">
                           <path
                             d="M0 0h24v24H0z"
-                            fill="none"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                            }}
-                          />
+                            fill="none" />
                           <path
-                            d="m13.83 5.777 4.393 4.393-10.58 10.58H3.25v-4.394l10.58-10.58zm3.204-2.527c.418 0 .837.16 1.157.48l2.08 2.08a1.63 1.63 0 0 1 0 2.314l-2.157 2.156-4.394-4.394 2.157-2.156c.32-.32.738-.48 1.157-.48z"
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
                             stroke="#ccc"
-                            strokeWidth="1.5"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                            }}
-                          />
+                            strokeWidth="1.5"/>
                         </g>
                       </svg>
                     </button>
@@ -1231,54 +726,24 @@ export default function Component() {
                   </div>
                 </div>
               </li>
-              <li
-                className="css-d35zkp erme1rh1"
-                style={{
-                  padding: "0px",
-                  margin: "0px",
-                  boxSizing: "border-box",
-                  borderBottom: "1px solid rgb(244, 244, 244)",
-                }}
-              >
-                <div
-                  style={{
-                    padding: "0px",
-                    margin: "0px",
-                    boxSizing: "border-box",
-                    flex: "1 1 0%",
-                    display: "flex",
-                  }}
-                >
 
-                  
-                  <div
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      WebkitBoxPack: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      flexBasis: "60px",
-                    }}
-                  >
+              <li className="AddressList-1">
+                <div id="AddressList-1">
+
+                  <div id="checkBtn">
                     <label htmlFor="checkbox">
                       <div>
                         
                       <input 
-                            //value="✔️"
                             type="checkbox"
                             value="checkbox2"
                             id="checkbox"
+                            
                             checked={checkboxes.includes('checkbox2')}
                             onChange={() => handleCheckboxChange('checkbox2')}
+                            
                             onClick={openModal2}
+                            
                             style={{
                               width:"22px",
                               height:"22px",
@@ -1289,25 +754,8 @@ export default function Component() {
                       </div>
                     </label>
                   </div>
-                  <div
-                    className="eeocvzp4 css-8xfsdg e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      flex: "1 1 0%",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      WebkitBoxPack: "start",
-                      justifyContent: "start",
-                      fontSize: "16px",
-                      textAlign: "left",
-                    }}
-                  >
+
+                  <div className="addressDetail">
                     <div
                       style={{
                         padding: "0px",
@@ -1318,86 +766,21 @@ export default function Component() {
                       부산 금정구 부산대학로63번길 46-5 다인빌 101호
                     </div>
                   </div>
-                  <div
-                    className="eeocvzp3 css-1o9d8vk e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      WebkitBoxPack: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      flexBasis: "120px",
-                    }}
-                  >
+                  <div className="addressName">
                     최현주
                   </div>
-                  <div
-                    className="eeocvzp2 css-xkreku e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      WebkitBoxPack: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      flexBasis: "100px",
-                    }}
-                  >
+                  <div className="addressPhone">
                     010-6563-0571
                   </div>
-                  <div
-                    className="eeocvzp1 css-1bs5q0a e19svclq0"
-                    style={{
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      margin: "20px 0px",
-                      display: "flex",
-                      WebkitBoxAlign: "center",
-                      alignItems: "center",
-                      WebkitBoxPack: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                      minHeight: "49px",
-                      color: "rgb(51, 51, 51)",
-                      letterSpacing: "-0.3px",
-                      flexBasis: "60px",
-                    }}
-                  >
 
-                    {/* 주소 수정 연필 이미지 */}
+                  {/* 주소 삭제 이미지 */}
+                  <div className="addressDel">
+
+                    {/* 주소 삭제 이미지 */}
                     {/* <Link to='/update'> */}
-                      <button onClick={openModal}
-                        style={{
-                          padding: "0px",
-                          boxSizing: "border-box",
-                          font: "inherit",
-                          margin: "0px",
-                          WebkitTapHighlightColor: "transparent",
-                          overflow: "visible",
-                          border: "none",
-                          backgroundColor: "transparent",
-                          textTransform: "none",
-                          appearance: "button",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          color: "rgb(51, 51, 51)",
-                          borderRadius: "0px",
-                          fontFamily:
-                            '"Noto Sans", "malgun gothic", AppleGothic, dotum, sans-serif',
-                        }}
+                      <button 
+                        id="XBtn"
+                        onClick={openModal3}
                       >
                         <svg
                           height="24"
@@ -1405,40 +788,21 @@ export default function Component() {
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
                           style={{
-                            padding: "0px",
-                            margin: "0px",
-                            boxSizing: "border-box",
                             overflow: "hidden",
                           }}
                         >
                           <g
                             fill="none"
                             fillRule="evenodd"
-                            style={{
-                              padding: "0px",
-                              margin: "0px",
-                              boxSizing: "border-box",
-                              //border:"2px solid green"
-                            }}
                           >
                             <path
                               d="M0 0h24v24H0z"
                               fill="none"
-                              style={{
-                                padding: "0px",
-                                margin: "0px",
-                                boxSizing: "border-box",
-                              }}
                             />
                             <path
-                              d="m13.83 5.777 4.393 4.393-10.58 10.58H3.25v-4.394l10.58-10.58zm3.204-2.527c.418 0 .837.16 1.157.48l2.08 2.08a1.63 1.63 0 0 1 0 2.314l-2.157 2.156-4.394-4.394 2.157-2.156c.32-.32.738-.48 1.157-.48z"
+                              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
                               stroke="#ccc"
                               strokeWidth="1.5"
-                              style={{
-                                padding: "0px",
-                                margin: "0px",
-                                boxSizing: "border-box",
-                              }}
                             />
                           </g>
                         </svg>
@@ -1451,6 +815,7 @@ export default function Component() {
           </div>
         </div>
       </div>
+
       <style
         dangerouslySetInnerHTML={{
                   __html: `
@@ -1476,36 +841,6 @@ export default function Component() {
                   -webkit-tap-highlight-color: transparent;
                   font-size: 14px;
                   color: rgb(51, 51, 51);
-                }
-
-                li:hover {
-                  background-color: rgb(250, 250, 250);
-                }
-
-                li:hover a {
-                  color: rgb(95, 0, 128);
-                }
-
-                li:hover svg {
-                  //color: #5f0080;
-                }
-
-
-                .NavDetail:hover #arrowIcon {
-                  stroke: #5f0080;
-                }
-
-                .myDiv {
-                  width: 200px;
-                  height: 200px;
-                }
-                
-                .myDiv:hover {
-                  cursor: pointer;
-                }
-
-                #checkbox:hover {
-                  cursor: pointer;
                 }
 
                 `,
