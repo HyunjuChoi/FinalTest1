@@ -31,9 +31,7 @@ const PopupModal2 = ({ isOpen2, closeModal2 }) => {
 
     <Modal isOpen={isOpen2} onRequestClose={closeModal2} style={customStyles2}>
       {/* Content of your modal */}
-        <div style={ {paddingTop: '6px',
-                 
-      }}>
+        <div style={ {paddingTop: '6px',}}>
         <h2 style={{ textAlign:'center', fontSize:'16pt'}}>배송지 선택이 완료되었습니다</h2>
         <div className="CloseBtn" style={ {
             paddingTop: '25px',
@@ -144,6 +142,7 @@ export default function Component() {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
 
   const openModal2 = () => {
+    setAddress1('');
     setIsModalOpen2(true);
   };
 
@@ -178,6 +177,7 @@ export default function Component() {
       streetNameAddress: '',
       detailedAddress: '',
     });
+
     setIsOpen(true);
   };
 
@@ -261,6 +261,35 @@ export default function Component() {
 `;
 
 
+  // 배송지 유효성 검사
+  const [address1, setAddress1] = useState();
+  const [checkAddress1, setCheckAddress1] = useState(false);
+
+  const address1Change = (e) => {
+    const temp = e.target.value;
+    
+    if(temp === ""){
+      setCheckAddress1(false);
+    }
+    else{
+      setCheckAddress1(true);
+    }
+    setAddress1(temp);
+    
+  }
+
+  const handleSave = () => {
+    if (!address.streetNameAddress || !address.detailedAddress) {
+      //toast.error('배송지 정보를 입력해주세요.');
+      alert('배송지 정보를 입력해주세요.'); // 배송지 정보가 비어있을 경우 알림 메시지를 표시합니다.
+      return;
+    }
+    // 배송지 정보가 모두 입력되었을 때, 저장 버튼을 누른 후 수행할 동작을 정의합니다.
+    alert('저장완료!');
+    closeModal();
+  };
+
+
   return (
     <>
       <div className="MyPage">
@@ -284,20 +313,24 @@ export default function Component() {
           <div style={{ margin: '5px' }}>
             <input
               value={address.streetNameAddress}
-              readOnly/>
+              //onChange={(e) => setAddress({ ...address, streetNameAddress: e.target.value })}
+              ///onBlur={ handleSave }
+              readOnly
+              />
 
             <input
               value={address.detailedAddress}
+              onChange={(e) => setAddress({ ...address, detailedAddress: e.target.value })}
               placeholder="  상세 주소를 입력해 주세요"
               />
           </div>
 
-          <p>&ensp; 받으실 분</p>
+          <p>&ensp;받으실 분</p>
           <div style={{ margin: '5px' }}>
             <input/>
           </div>
 
-          <p>&ensp; 휴대폰</p>
+          <p>&ensp;휴대폰</p>
           <div style={{ margin: '5px' }}>
             <input/>
           </div>
@@ -305,7 +338,9 @@ export default function Component() {
           <div className="Btn" style={{ paddingTop: '10px' }}>
             <button
               id="updateBtn"
-              onClick={closeModal}>
+              onClick={ handleSave }
+              disabled={!address.streetNameAddress || !address.detailedAddress}
+            >
               저장
             </button>
           </div>
@@ -399,7 +434,7 @@ export default function Component() {
             
             
             <li className="NavDetail" style={{ }} >
-              <a className="Address">
+              <a href="/address" className="Address">
                 배송지 관리
                 <svg
                   id="Arrow"
@@ -438,8 +473,8 @@ export default function Component() {
               </a>
             </li>
             
-            <li className="NavDetail" style={{ }}>
-              <a className="Review">
+            <li className="NavDetail">
+              <a href="/review" className="Review">
                 상품후기
                 <svg
                   id="Arrow"
@@ -479,7 +514,7 @@ export default function Component() {
             </li>
 
             <li className="NavDetail">
-              <a className="Info">
+              <a href="/info" className="Info">
                 개인 정보 수정
                 <svg
                   id="Arrow"
@@ -594,9 +629,6 @@ export default function Component() {
               </div>
             </div>
             
-
-            <div className="DivideLine"/>
-
             <div
               className="IndexBar" >
               <div
