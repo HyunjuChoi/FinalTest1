@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import './Order.css';
 
@@ -275,11 +275,13 @@ const Order = () => {
 
                   <div className="OrderDetailItem" >
                     <div className="css-fhxb3m e1437c649">
-                      <img
-                        className="OrderItemImg"
-                        alt="[아티제] 버터롤 상품 이미지"
-                        src="https://img-cf.kurly.com/shop/data/goods/1653038714146l0.jpeg"  
-                      />
+                      <NavLink to={"../address"}>
+                        <img
+                          className="OrderItemImg"
+                          alt="[아티제] 버터롤 상품 이미지"
+                          src="https://img-cf.kurly.com/shop/data/goods/1653038714146l0.jpeg"  
+                        />
+                      </NavLink>
                       <div className="OrderItemDescript">
                         <dl className="ItemRow e1437c646">
                           <dt className="ItemCol1 e1437c645">

@@ -14,7 +14,7 @@ const PopupModal2 = ({ isOpen2, closeModal2 }) => {
 
   const customStyles2 = {
     content: {
-      width: '22%', // Set the desired width
+      width: '18%', // Set the desired width
       height: '18%', // Set the desired height
       margin: 'auto', // Center the modal horizontally
       borderRadius: '8px',
@@ -40,19 +40,9 @@ const PopupModal2 = ({ isOpen2, closeModal2 }) => {
 
         }}>
           &ensp;
-        <button onClick={closeModal2}
-                style ={{
-                  width:'50%',
-                  height: '45px',
-                  background: '#5f0080',
-                  borderRadius: '3px',
-                  cursor: 'pointer',
-                  fontSize: '11pt',
-                  fontWeight: 'bold',
-                  color: 'white',
-                  border: '0px',
-                  
-              }}
+        <button 
+          className="closeBtn"
+          onClick={closeModal2}
         >확인</button>
         </div>      
       </div>
@@ -66,7 +56,7 @@ const PopupModal3 = ({ isOpen3, closeModal3 }) => {
 
   const customStyles3 = {
     content: {
-      width: '22%', // Set the desired width
+      width: '18%', // Set the desired width
       height: '18%', // Set the desired height
       margin: 'auto', // Center the modal horizontally
       borderRadius: '8px',
@@ -94,19 +84,9 @@ const PopupModal3 = ({ isOpen3, closeModal3 }) => {
 
         }}>
           &ensp;
-        <button onClick={closeModal3}
-                style ={{
-                  width:'50%',
-                  height: '45px',
-                  background: '#5f0080',
-                  borderRadius: '3px',
-                  cursor: 'pointer',
-                  fontSize: '11pt',
-                  fontWeight: 'bold',
-                  color: 'white',
-                  border: '0px',
-                  
-              }}
+        <button 
+          className="closeBtn"
+          onClick={closeModal3}
         >삭제</button>
         </div>      
       </div>
@@ -142,7 +122,7 @@ export default function Component() {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
 
   const openModal2 = () => {
-    setAddress1('');
+    //setAddress1('');
     setIsModalOpen2(true);
   };
 
@@ -168,6 +148,8 @@ export default function Component() {
   const [address, setAddress] = useState({
     streetNameAddress: '',
     detailedAddress: '',
+    name:'',
+    phone:'',
   });
   const [showPostcode, setShowPostcode] = useState(false);
 
@@ -176,7 +158,12 @@ export default function Component() {
     setAddress({
       streetNameAddress: '',
       detailedAddress: '',
+      name:'',
+      phone:'',
     });
+    
+    //setName(''); // Reset the name field
+    //setPhone(''); // Reset the phone field
 
     setIsOpen(true);
   };
@@ -199,12 +186,13 @@ export default function Component() {
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    const streetNameAddress = data.address;
 
     setAddress({
       ...address,
-      streetNameAddress: streetNameAddress,
+      streetNameAddress: fullAddress,
       detailedAddress: '',
+      name:'',
+      phone:'',
     });
 
     setShowPostcode(false);
@@ -221,7 +209,7 @@ export default function Component() {
 
   const customStyles = {
     content: {
-        width: '35%', // Set the desired width
+        width: '25%', // Set the desired width
         height: '55%', // Set the desired height
         margin: 'auto', // Center the modal horizontally
         borderRadius: '8px',
@@ -262,32 +250,54 @@ export default function Component() {
 
 
   // 배송지 유효성 검사
-  const [address1, setAddress1] = useState();
-  const [checkAddress1, setCheckAddress1] = useState(false);
 
-  const address1Change = (e) => {
-    const temp = e.target.value;
-    
-    if(temp === ""){
-      setCheckAddress1(false);
-    }
-    else{
-      setCheckAddress1(true);
-    }
-    setAddress1(temp);
-    
-  }
+  // const [name, setName] = useState('');
+  // const [phone, setPhone] = useState('');
+
+
+  // const handleNameChange = (e) => {
+  //   setName(e.target.value);
+  // };
+
+  // const handlePhoneChange = (e) => {
+  //   setPhone(e.target.value);
+  // };
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSave = () => {
-    if (!address.streetNameAddress || !address.detailedAddress) {
-      //toast.error('배송지 정보를 입력해주세요.');
-      alert('배송지 정보를 입력해주세요.'); // 배송지 정보가 비어있을 경우 알림 메시지를 표시합니다.
+
+    if (
+      !address.streetNameAddress ||
+      !address.detailedAddress ||
+      address.detailedAddress.trim() === '' ||
+      !address.name ||
+      !address.phone
+    ) 
+    
+    {
+      alert('배송지 정보를 모두 입력해주세요');
+
+      if (!address.streetNameAddress) {
+        setErrorMessage('배송지 주소를 입력해주세요.');
+      } else if (!address.detailedAddress) {
+        setErrorMessage('상세 주소를 입력해주세요.');
+      } else if (!address.name) {
+        setErrorMessage('이름을 입력해주세요.');
+      } else if (!address.phone) {
+        setErrorMessage('휴대폰 번호를 입력해주세요.');
+      }
       return;
     }
+
     // 배송지 정보가 모두 입력되었을 때, 저장 버튼을 누른 후 수행할 동작을 정의합니다.
-    alert('저장완료!');
+
+    setErrorMessage('');
+    alert('배송지가 등록되었습니다.');
     closeModal();
+  
   };
+
 
 
   return (
@@ -298,9 +308,9 @@ export default function Component() {
 
     <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
     <style>{hideScrollbarStyles}</style>
-        <div style={{ paddingTop: '5px' }}>
+        <div style={{ paddingTop: '5px', }}>
           <h2>&ensp;새 배송지 등록</h2>
-          <br />
+          <br/>
           <span>&ensp;배송지 입력&ensp;</span>
 
           <button
@@ -310,46 +320,57 @@ export default function Component() {
             주소찾기
           </button>
 
-          <div style={{ margin: '5px' }}>
+          <div className="addressField">
             <input
+              name="streetNameAddress"
               value={address.streetNameAddress}
-              //onChange={(e) => setAddress({ ...address, streetNameAddress: e.target.value })}
+              onChange={(e) => setAddress({ ...address, streetNameAddress: e.target.value })}
               ///onBlur={ handleSave }
+              //onChange={handleSave}
               readOnly
               />
+              {!address.streetNameAddress && <div className="error-message">배송지 주소를 입력해주세요</div>}
+          </div>
 
-            <input
-              value={address.detailedAddress}
-              onChange={(e) => setAddress({ ...address, detailedAddress: e.target.value })}
-              placeholder="  상세 주소를 입력해 주세요"
-              />
+          <div className="addressField">
+              <input
+                name="detailedAddress"
+                value={address.detailedAddress}
+                onChange={(e) => setAddress({ ...address, detailedAddress: e.target.value })}
+                //onChange={handleSave}
+                placeholder="  상세 주소"
+                />
+                {!address.detailedAddress && <div className="error-message">상세 주소를 입력해주세요</div>}
           </div>
 
           <p>&ensp;받으실 분</p>
-          <div style={{ margin: '5px' }}>
-            <input/>
+          <div className="addressField">
+            <input
+              name="name"
+              value={address.name}
+              onChange={(e) => setAddress({ ...address, name: e.target.value })}
+            />
+            {!address.name && <div className="error-message">이름을 입력해주세요</div>}
           </div>
 
           <p>&ensp;휴대폰</p>
-          <div style={{ margin: '5px' }}>
-            <input/>
+          <div className="addressField">
+            <input
+              name="phone"
+              value={address.phone}
+              onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+              placeholder="  숫자만 입력해주세요"
+            />
+            {!address.phone && <div className="error-message">휴대폰 번호를 입력해주세요</div>}
           </div>
 
-          <div className="Btn" style={{ paddingTop: '10px' }}>
+          <div className="Btn" style={{ }}>
             <button
               id="updateBtn"
               onClick={ handleSave }
-              disabled={!address.streetNameAddress || !address.detailedAddress}
+              //disabled={!address.streetNameAddress || !address.detailedAddress}
             >
               저장
-            </button>
-          </div>
-
-          <div className="Btn" style={{ paddingTop: '10px' }}>
-            <button
-              id="deleteBtn"
-              onClick={handleDelete} >
-              삭제
             </button>
           </div>
         </div>
